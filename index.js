@@ -4,7 +4,7 @@ const app = require("./app")
 var Empresa = require("./src/controladores/empresa.controlador")
 
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://localhost:27017/dbSucursales', {useNewUrlParser: true, useUnifiedTopology: true }).then(()=>{
+mongoose.connect(/*'mongodb://localhost:27017/dbSucursales'*/'mongodb+srv://elvis:root.@sucursales.htt5q.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true }).then(()=>{
     
     Empresa.empresaAdmin()
 
