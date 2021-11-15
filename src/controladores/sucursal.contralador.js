@@ -1,6 +1,10 @@
 'use strict'
 
 var Sucursal = require("../modelos/sucursal.modelo");
+var pdf = require("pdfkit");
+var fs = require("fs");
+
+var datos;
 
 function ejemploSucursal(req, res){
     res.status(200).send({mensaje:' Ejemplo desde controlador de sucursales'})
@@ -120,12 +124,60 @@ function RemoveSucursal(req, res){
   }))
 }
 
+function generarPDF(req, res){
+
+  var params = req.body;
+
+  if(req.user.rol != 'Admin'){
+    return res.status(500).send({mensaje: 'Solo el rol tipo admin puede eliminar las sucursales'});
+  }
+
+  if(params.sucursalEmpresa === req.user.nombre){
+
+    Sucursal.find({
+
+
+      sucursalEmpresa: req.user.nombre
+
+    }).exec((err, SucursalRegistrada)=>{
+      if(err) return res.status(500).send({mensaje: 'Error  en la peticion'})
+
+      if(!SucursalRegistrada) return res.status(500).send({mensaje: 'Error al generar el pdf'})
+
+      datos = SucursalRegistrada
+
+
+      var doc = new pdf();
+
+
+      doc.pipe(fs.createWriteStream(`${req.user.nombre}.pdf`));
+
+      doc.text(`Sucursales ${req.user.nombre}`,{
+        align: 'center'
+      })
+
+      doc.text(datos,{
+        aling: 'center'
+      })
+
+      doc.end()
+    })
+
+    return res.status(200).send({mensaje:'pdf creado correctamente'})
+ 
+  } else{
+      return res.status(500).send({mensaje: 'Solo puede generar pdf el Rol tipo empresa'});
+  }
+
+}
+
 module.exports = {
   ejemploSucursal,
   AgregarSucursal,
   getSucursal,
   getSucursalID,
   UpdateSucursal,
-  RemoveSucursal
+  RemoveSucursal,
+  generarPDF
   
 }

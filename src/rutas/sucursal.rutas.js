@@ -13,5 +13,6 @@ api.get('/getSucursal',md_authorization.ensureAuth, sucursal_controlador.getSucu
 api.get('/getSucursalID/:idSucursal', md_authorization.ensureAuth, sucursal_controlador.getSucursalID);
 api.put('/UpdateSucursal/:id', md_authorization.ensureAuth, sucursal_controlador.UpdateSucursal);
 api.delete('/RemoveSucursal/:id', md_authorization.ensureAuth, sucursal_controlador.RemoveSucursal);
+api.get('/generarpdf', md_authorization.ensureAuth, sucursal_controlador.generarPDF);
 
 module.exports = api;
