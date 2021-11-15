@@ -49,7 +49,83 @@ function AgregarProducto(req, res){
     }
 }
 
+function getProducto(req, res){
+
+    if(req.user.rol != 'Admin'){
+        return res.status(500).send({mensaje:'Solo el rol tipo admin puede crear productos'});
+    }
+
+    Producto.find().exec((err, productos)=>{
+        if(err) return res.status(500).send({mensaje: 'Error  en la peticion'})
+     
+        if(!productos) return res.status(500).send({mensaje: 'Erro al obtener los productos'})
+
+        return res.status(200).send({productos})
+    }) 
+}
+
+function ObtenerProductoID(req, res){
+
+    var ProductoID = req.params.idproducto;
+
+    if(req.user.rol != 'Admin'){
+        return res.status(500).send({mensaje:'Solo el rol tipo admin puede crear productos'});
+    }
+
+    Producto.findById(ProductoID, (err, ProductoEncontrado)=>{
+        if(err) return res.status(500).send({mensaje: 'Error  en la peticion'})
+
+        if(!ProductoEncontrado) return res.status(500).send({mensaje: 'Error al buscar el producto'})
+
+        return res.status(200).send({ProductoEncontrado})
+    })
+
+
+}
+
+function updateProducto(req, res){
+
+    var idProducto = req.params.id;
+    var params = req.body;
+
+    if(req.user.rol != 'Admin'){
+        return res.status(500).send({mensaje:'Solo el rol tipo admin puede crear productos'});
+    }
+
+    Producto.findByIdAndUpdate(idProducto, params,{new: true},(err, ProductoEditado)=>{
+        if(err) return res.status(500).send({mensaje: 'Error  en la peticion'})
+
+        if(!ProductoEditado) return res.status(500).send({mensaje: 'Error al editar el producto'})
+    
+        return res.status(200).send({ProductoEditado})
+    })
+
+    
+}
+
+
+function DeleteProducto(req, res){
+
+    var idProducto = req.params.id;
+
+    if(req.user.rol != 'Admin'){
+        return res.status(500).send({mensaje:'Solo el rol tipo admin puede crear productos'});
+    }
+
+    Producto.findByIdAndDelete(idProducto, ((err, ProductoEliminado)=>{
+        if(err) return res.status(500).send({mensaje: 'Error  en la peticion'})
+
+        if(!ProductoEliminado) return res.status(500).send({mensaje: 'Error al eliminar el producto'})
+
+        return res.status(200).send({ProductoEliminado})
+    }))
+}
+
 module.exports = {
     ejemploProducto,
-    AgregarProducto
+    AgregarProducto,
+    getProducto,
+    ObtenerProductoID,
+    updateProducto,
+    DeleteProducto
 }
