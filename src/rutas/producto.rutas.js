@@ -13,6 +13,8 @@ api.get('/getProducto',md_authorization.ensureAuth, producto_controlador.getProd
 api.get('/getProductoID/:idproducto',md_authorization.ensureAuth, producto_controlador.ObtenerProductoID);
 api.put('/updateProducto/:id',md_authorization.ensureAuth, producto_controlador.updateProducto);
 api.delete('/DeleteProducto/:id', md_authorization.ensureAuth, producto_controlador.DeleteProducto);
+api.get('/ordenarAscendente', md_authorization.ensureAuth, producto_controlador.ordenarAscendente);
+api.get('/ordenarDescendente',md_authorization.ensureAuth, producto_controlador.ordenarDescendente);
 
 
 module.exports = api;

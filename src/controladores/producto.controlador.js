@@ -1,5 +1,6 @@
 'use strict'
 
+const { obtenerProductoProveedor } = require("../../../Control de Empresas Final Node/src/controladores/producto.controlador");
 var Producto = require("../modelos/producto.modelo");
 
 function ejemploProducto(req, res){
@@ -121,11 +122,42 @@ function DeleteProducto(req, res){
     }))
 }
 
+function ordenarAscendente(req, res){
+
+    if(req.user.rol != 'Admin'){
+        return res.status(500).send({mensaje:'Solo el rol tipo admin puede ordenar productos'});
+    }
+
+    Producto.find().sort({stock:1}).exec((err, productos)=>{
+        if(err) return res.status(500).send({mensaje: 'Error  en la peticion'})
+
+        if(!productos) return res.status(500).send({mensaje: 'Error al ordenar el stock'})
+
+        return res.status(200).send({productos})
+    })
+}
+
+function ordenarDescendente(req,res){
+
+    if(req.user.rol != 'Admin'){
+        return res.status(500).send({mensaje:'Solo el rol tipo admin puede ordenar productos'});
+    }
+
+    Producto.find().sort({stock:-1}).exec((err, productos)=>{
+        if(err) return res.status(500).send({mensaje: 'Error  en la peticion'})
+
+        if(!productos) return res.status(500).send({mensaje: 'Error al ordenar el stock'})
+
+        return res.status(200).send({productos})
+    })
+}
 module.exports = {
     ejemploProducto,
     AgregarProducto,
     getProducto,
     ObtenerProductoID,
     updateProducto,
-    DeleteProducto
+    DeleteProducto,
+    ordenarDescendente,
+    ordenarAscendente
 }
