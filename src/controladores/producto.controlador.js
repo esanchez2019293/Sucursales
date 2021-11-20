@@ -1,9 +1,9 @@
 'use strict'
 
-const { obtenerProductoProveedor } = require("../../../Control de Empresas Final Node/src/controladores/producto.controlador");
 var Producto = require("../modelos/producto.modelo");
+var ProductoSucursal = require('../modelos/producto-sucursal.modelo')
 
-function ejemploProducto(req, res){
+function ejemploProducto(res){
     res.status(200).send({mensaje: ' Ejemplo desde controlador de productos'})
 }
 
@@ -151,6 +151,24 @@ function ordenarDescendente(req,res){
         return res.status(200).send({productos})
     })
 }
+
+
+function enviarProducto(req, res){
+
+    var params = req.body;
+    var sucursalId = req.params.id;
+    var envios = Number(params.envios)
+
+    if(req.user.rol != 'Admin'){
+        return res.status(200).send({mensaje:'Solo el rol tipo admin puede agrtegra producto a las sucursales'});
+    }
+    
+    ProductoSucursal.findByIdAndUpdate(sucursalId, { $inc: { stockSucursal: envios}}, { new: true}, (err, stockActualizado)=>{
+
+        return res.status(200).send({ stockActualizado: stockActualizado })
+    })
+}
+
 module.exports = {
     ejemploProducto,
     AgregarProducto,
@@ -159,5 +177,6 @@ module.exports = {
     updateProducto,
     DeleteProducto,
     ordenarDescendente,
-    ordenarAscendente
+    ordenarAscendente,
+    enviarProducto
 }

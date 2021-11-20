@@ -24,7 +24,7 @@ function AgregarSucursal(req, res){
     sucursalModel.nombre = params.nombre;
     sucursalModel.direccion = params.direccion;
     sucursalModel.telefono = params.telefono;
-    sucursalModel.sucursalEmpresa = req.user.usuario;
+    sucursalModel.sucursalEmpresa = req.user.sub;
 
     Sucursal.find({
       $or: [

@@ -15,6 +15,6 @@ api.put('/updateProducto/:id',md_authorization.ensureAuth, producto_controlador.
 api.delete('/DeleteProducto/:id', md_authorization.ensureAuth, producto_controlador.DeleteProducto);
 api.get('/ordenarAscendente', md_authorization.ensureAuth, producto_controlador.ordenarAscendente);
 api.get('/ordenarDescendente',md_authorization.ensureAuth, producto_controlador.ordenarDescendente);
-
+api.put('/enviarProducto/:id', md_authorization.ensureAuth, producto_controlador.enviarProducto);
 
 module.exports = api;
