@@ -9,7 +9,7 @@ var ProductoSucursalSchema = Schema({
     nombreProductoSucursal: String,
     stockSucursal: Number,
     cantidadVendida: String,
-    sucursalProducto: {type: Schema.Types.ObjectId, ref:'sucursal'}
+    sucursalProducto: {type: Schema.Types.String, ref:'sucursal'}
 })
 
 module.exports = mongoose.model('productoSucursal', ProductoSucursalSchema)
